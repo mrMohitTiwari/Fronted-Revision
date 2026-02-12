@@ -3,8 +3,10 @@ const { createTodo, updateTodo } = require("./types");
 const {todo} = require("./db");
 const { describe } = require("zod/v4/core");
 const app = express()
+const cors = require("cors")
+const { httpUrl,  } = require("zod");
 app.use(express.json())
-
+app.use(cors())
 // creating routes
 // creating a new todo
 app.post('/todo', async (req, res) => {
@@ -49,6 +51,7 @@ app.put("/completed", async (req, res) => {
             msg: "you have sent a wrong inputs"
         })
         return;
+    }
         // updating the todo
 
           await todo.update(
@@ -63,6 +66,6 @@ app.put("/completed", async (req, res) => {
           res.json({
             msg:"todo marked as completed"
           })
-    }
+    
 })
-app.listen(3000,()=>console.log("running succesfully"))
+app.listen(3033,()=>console.log("running succesfully"))
