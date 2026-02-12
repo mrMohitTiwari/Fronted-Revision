@@ -12,8 +12,11 @@ mongoose.connect("mongodb+srv://mt0988145_db_user:chalbhag@cluster0.f8znkl1.mong
 const todoSchema = mongoose.Schema({
     title:String,
     description:String,
-    completed:Boolean
+    completed:{
+        type:Boolean,
+        default:false,
+    }
 })
 const todo = mongoose.model('todos',todoSchema)
-module.exports({todo})
+module.exports={todo}
 // mongoose.connect('mongodb+srv://mt0988145_db_user:chalbhag@cluster0.f8znkl1.mongodb.net/userappnew').then(() => console.log("mongoose connected Suceefully")).catch(() => console.log("Error while connecting to Server"))
