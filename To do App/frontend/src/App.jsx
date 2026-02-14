@@ -12,13 +12,18 @@ function App() {
 
   const [todos, setTodos] = useState([])
 // fetching the todos from the backend
+// setting it for every 20 second 
 useEffect(()=>{
-fetch("http://localhost:3033/todos")
-      .then(async function (res) {
-        const json = await res.json();
-        setTodos(json.todos);
-        console.log(json.todos);
-      }).catch((err)=>console.log(err));
+  const fetchTodos=()=>fetch("http://localhost:3033/todos").then(async (res)=>{
+    const json = await res.json()
+    setTodos(json.todos)
+
+  }).catch(err=>console.log(err))
+fetchTodos();
+// fetch every 20s 
+const interval = setInterval(fetchTodos,20000)
+// memory cleanup
+return () =>clearInterval(interval)
 },[])
 
   return (  
