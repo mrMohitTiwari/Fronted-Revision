@@ -1,0 +1,149 @@
+Why react component can not have more then one parent function
+like
+App(){
+    return (
+        div1
+        div2
+    )
+}
+A component can only return a single top level xml
+why->it makes easy to do reconcillation 
+Q1.create a app componet and which takes title as prop and renders it 
+import { useState } from 'react'
+function App() {
+  const [count, setCount] = useState(0)
+
+  return (
+    <>
+     <div>
+      <Header title={"abc"}></Header>
+      <Header title={"xyz"}></Header>
+     </div>
+    </>
+  )
+}
+function Header({title}){
+  return <h1>{title}</h1>
+}
+
+export default App
+//one solution was prop downgrading
+import { useState } from 'react'
+function App() {
+
+ 
+  return (
+    <>
+     <div>
+      <OnclickHeader></OnclickHeader>
+      <Header title={"physics"}></Header>
+ 
+
+     </div>
+    </>
+  )
+}
+function OnclickHeader()
+{
+    const [ans, setAns] = useState(0)
+  // handler function
+   function handleClick(){
+    setAns(1+Math.random())
+   }
+
+return (<div>
+  <button onClick={handleClick}
+      >Click on me to change the titile</button>
+      <Header title={ans}></Header>
+</div>) 
+  }
+
+
+function Header({title}){
+  return <h1>{title}</h1>
+}
+
+export default App
+//using memo
+import { useState,memo } from 'react'
+function App() {
+const [ans, setAns] = useState(0)
+  function handleClick(){
+    setAns(1+Math.random())
+   }
+  return (
+    <>
+     <div>
+      <button onClick={handleClick}>Click on me to change the titile</button>
+      <Header title={ans}></Header>
+
+      <Header title={"physics"}></Header>
+      <Header title={"physics"}></Header>
+      <Header title={"physics"}></Header>
+      <Header title={"physics"}></Header>v
+ 
+
+     </div>
+    </>
+  )
+}
+
+//  using memo to mimise renders
+const Header = memo(function Header({title}){
+  return <h1>{title}</h1>
+})
+
+export default App
+Wrapper Components
+// Learning how to build wrapper class
+ function App()
+{
+  return <>
+  <CardWrapper innerComponent = {<TextComponent/>}></CardWrapper>
+  </>
+}
+function TextComponent()
+{
+  return <h1>Hello I am text</h1>
+}
+// card wrapper function 
+function CardWrapper({innerComponent})
+
+{
+   return (
+    <>
+    <div style={{border:"2px solid red"}}>
+      {innerComponent}
+
+    </div>
+    </>
+   )
+}
+export default App
+This is not a good way another way is passing childeren prop
+// Learning how to build wrapper class
+ function App()
+{
+  return <>
+  <CardWrapper >Hi there</CardWrapper>
+  </>
+}
+// function TextComponent()
+// {
+//   return <h1>Hello I am text</h1>
+// }
+// card wrapper function 
+function CardWrapper({children})
+
+{
+   return (
+    <>
+    <div style={{border:"2px solid red"}}>
+      {children}
+
+    </div>
+    </>
+   )
+}
+export default App
+// in the children u can pass component or anything
