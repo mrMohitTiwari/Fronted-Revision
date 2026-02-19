@@ -24,6 +24,8 @@
        <button onClick={()=>setId(2)}>2</button>
        <button onClick={()=>setId(3)}>3</button>
        <button onClick={()=>setId(4)}>4</button>
+       <button onClick={()=>setId(5)}>5</button>
+       <button onClick={()=>setId(6)}>6</button>
        <Todo id={id}/>
       </>
     )
