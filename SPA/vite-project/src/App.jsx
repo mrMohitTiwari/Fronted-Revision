@@ -1,47 +1,38 @@
-import React from "react"
-import { BrowserRouter, Route, Routes, useNavigate } from "react-router-dom"
-import './App.css'
-const   Dashboard =  React.lazy(() => import('./Pages/dashboard'))
-import { Landing } from './Pages/landing'
+import { useContext, useState } from "react";
+import { RecoilRoot, useRecoilState, useRecoilValue, useSetRecoilState } from "recoil";
+import { countAtom } from "./store/atoms/count";
+
 
 function App() {
 
-  return (
-    <div>
-     
-    <BrowserRouter>
-    <AppBar/>
-   <Routes>
-
-      <Route path="/dashboard" element={<Dashboard/>}/>
-      <Route path="/" element={<Landing/>}/>
-   </Routes>
-    </BrowserRouter>
+    return <div>
+        <RecoilRoot>
+            <Count />
+        </RecoilRoot>
     </div>
-  )
+
 }
-function AppBar()
-{
-  // now we have defined navigation hook inside a component which is inside a browser component
-const navigate = useNavigate()
+function Count() {
+    return (<>
+        <CountRender />
+        <Buttons />
+    </>)
+}
 
-  return (
-    <>
-     <div style={{background:"black",color:"white"}}>
-        Top level div
-        {/* adding two buttons */}
-        <button onClick={()=>{
-          // window.location.href = '/'
-          navigate("/");
-        }}>Landing Page</button>
-        <br />
-         <button onClick={()=>{
-          // window.location.href = '/dashboard'
-          navigate("/dashboard")
-        }}>Dashboard Page</button>
+function CountRender() {
+    // it just needs the value of count 
+    const count = useRecoilValue(countAtom)
+    return <div>
+        {count}
+    </div>
+}
+function Buttons() {
 
-      </div>
-    </>
-  )
+    // const [count, setCount] = useRecoilState(countAtom) it does not need this count it makes it rerender 
+    const setCount = useSetRecoilState(countAtom)
+    return <div>
+        <button onClick={() => setCount(c=>c+1)}>Increase</button>
+        <button onClick={() => setCount(c=>c - 1)}>Decrese</button>
+    </div>
 }
 export default App
