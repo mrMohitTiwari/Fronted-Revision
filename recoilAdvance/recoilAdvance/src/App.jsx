@@ -1,35 +1,41 @@
-import { useState } from 'react'
+import { useMemo, useState } from 'react'
 import reactLogo from './assets/react.svg'
 import viteLogo from '/vite.svg'
 import './App.css'
+import { RecoilRoot, useRecoilValue } from 'recoil'
+import { AllNotificationSelector, myMessageAtom, myNetworkAtom, NotificationAtom } from './atoms'
 
 function App() {
   const [count, setCount] = useState(0)
 
   return (
     <>
-      <div>
-        <a href="https://vite.dev" target="_blank">
-          <img src={viteLogo} className="logo" alt="Vite logo" />
-        </a>
-        <a href="https://react.dev" target="_blank">
-          <img src={reactLogo} className="logo react" alt="React logo" />
-        </a>
-      </div>
-      <h1>Vite + React</h1>
-      <div className="card">
-        <button onClick={() => setCount((count) => count + 1)}>
-          count is {count}
-        </button>
-        <p>
-          Edit <code>src/App.jsx</code> and save to test HMR
-        </p>
-      </div>
-      <p className="read-the-docs">
-        Click on the Vite and React logos to learn more
-      </p>
+    <RecoilRoot>
+      <MainApp/>
+    </RecoilRoot>
+    
+      
     </>
   )
 }
-
+function MainApp()
+{
+    const Notification = useRecoilValue(NotificationAtom)
+    const myMessage = useRecoilValue(myMessageAtom)
+    const myNetwork = useRecoilValue(myNetworkAtom)
+    const allNotification = useRecoilValue(AllNotificationSelector)
+    // we can also use use memo (but recoil has seperate thing for it as selector)
+    // const totalNotification = useMemo(()=>{
+    //   return Notification+ myMessage + myNetwork
+    // },[Notification,myMessage,myNetwork])
+  return (
+    <div>
+      <button>Home</button>
+      <button>My Network ({myNetwork})</button>
+      <button>Messages ({myMessage>100?"99+":myMessage})</button>
+      <button>Notification ({Notification})</button>
+      <button>Me({allNotification})</button>
+    </div>
+  )
+}
 export default App
